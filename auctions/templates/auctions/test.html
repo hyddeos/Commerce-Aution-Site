@@ -1,0 +1,13 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>TEST</h2>
+    <br>
+    Listings: {{ listings }}
+    <br>
+    {% for item in items %}
+        Item: {{ item.creator }}
+        <br>
+    {% endfor %}
+
+{% endblock %}

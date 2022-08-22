@@ -1,0 +1,144 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if active %}
+        <div class"item-page">
+            <h1>{{ item.title }} </h1>
+            <br>
+            <p>Category: <strong>{{ item.category }}</strong></p>
+            
+            {% if item.image %}
+                <img id="item_page_img" src="{{ item.image }}">
+            {% else %}
+                <p>No image</p>
+            {% endif %}
+            <br>
+            Description:
+            {% if item.description %}
+                {{ item.description }}</p>
+            {% else %}
+                No Description avaible</p>
+            {% endif %}
+            <h4>Current Bid: ${{ bid }}</h4>
+            <br>
+
+            {% if user.is_authenticated %}
+                
+                {% if creator %}
+                    <div>
+                        <form action="{{ item.id }}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="auction_status" value="end_auction">
+                            <input class="btn btn-primary" type="submit" value="End Auction">
+                        </form>
+                    </div>
+                {% else %}
+                    <div>
+                            <h3 class="error">{{ error }}</h3>
+                        <form action="{{ item.id }}" method="POST">
+                            {% csrf_token %}
+                            <input type="number" name="new_bid" placeholder="${{ bid_min }} is minum" min="{{ bid_min }}" required>
+                            <input class="btn btn-primary" type="submit" value="Place bid!">
+                        </form>
+                    </div>
+                {% endif %}
+                
+                {% if watchlist %}
+                    <div>
+                        <a href="/watchlist/{{ item.pk }}">
+                            <button class="btn btn-primary">Remove from Watchlist</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a href="/watchlist/{{ item.pk }}">
+                            <button class="btn btn-primary">Add to Watchlist</button>
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <a href="/comment/{{ item.pk }}">
+                        <button class="btn btn-primary">Comment</button>
+                    </a>
+                </div>
+
+            {% else %}
+                <p> If you log in you can add to Bid, Add to Watchlist and make a Comment</p>
+            {% endif %}
+
+            <br>
+            <p>Auction created by: <strong>{{ item.creator }}</strong></p>
+        </div>
+
+    {% else %}
+
+        <h4>This auction is over</h4>
+        <h2><strong class="winner">{{ winner }}</strong>, won this auction!</h2>
+        <br><hr>
+        <div class"item-page">
+            <h1>{{ item.title }} </h1>
+            <br>
+            <p>Category: <strong>{{ item.category }}</strong></p>
+            
+            {% if item.image %}
+                <img id="item_page_img" src="{{ item.image }}">
+            {% else %}
+                <p>No image</p>
+            {% endif %}
+            <br>
+            Description:
+            {% if item.description %}
+                {{ item.description }}</p>
+            {% else %}
+                No Description avaible</p>
+            {% endif %}
+            <h4>Winning Bid: ${{ bid }}</h4>
+            <br>
+            {% if user.is_authenticated %}
+                {% if watchlist %}
+                    <div>
+                        <a href="/watchlist/{{ item.pk }}">
+                            <button class="btn btn-primary">Remove from Watchlist</button>
+                        </a>
+                    </div>
+                {% else %}
+                    <div>
+                        <a href="/watchlist/{{ item.pk }}">
+                            <button class="btn btn-primary">Add to Watchlist</button>
+                        </a>
+                    </div>
+                {% endif %}
+
+                <div>
+                    <a href="/comment/{{ item.pk }}">
+                        <button class="btn btn-primary">Comment</button>
+                    </a>
+                </div>
+            
+            {% else%}            
+                <p> If you log in you can add Add to Watchlist and make a Comment</p>
+            {%endif %}
+            <br>
+            <p>Auction created by: <strong>{{ item.creator }}</strong></p>
+        </div>
+
+    {% endif %}
+    
+    <hr>
+    <div class"item-page">
+        <h1>Comments</h1>
+        <br><br>
+        {% for comment in comments %}
+            <div>
+                <hr>
+               {{ comment.comment }}
+               <br><br>
+               Comment by:<strong> {{ comment.username }}</strong>     {{ comment.datetime }}
+               <hr>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <br>
+    
+    {% for item in active_items %}
+        <div class="list_object">
+            <h3>{{ item.title }}</h3>
+            <p>Category: <strong>{{item.category}}</strong></p>
+            {% if item.image %}
+                <img id="object_img" src="{{ item.image }}">
+            {% else %}
+                <p>No image</p>
+            {% endif %}        
+            {% if item.description %}
+                <p>Description: {{ item.description }}</p>
+            {% else %}
+                <p>Description: No Description avaible</p>
+            {% endif %}
+            <h4>Current bid: ${{ item.bid }}</h4>
+
+            <a href="/item/{{ item.id }}">
+                <button class="btn btn-primary">Read More</button>
+            </a>            
+        </div>
+        <hr>
+    {% endfor %}
+
+    <br><br>
+    <h2>Finnished Auctions</h2>
+    <br>    
+    {% for item in inactive_items %}
+    <div class="list_object">        
+        <h3>{{ item.title }}</h3>
+        <p>Category: <strong>{{item.category}}</strong></p>
+        {% if item.image %}
+            <img id="object_img" src="{{ item.image }}">
+        {% else %}
+            <p>No image</p>
+        {% endif %}        
+        {% if item.description %}
+            <p>Description: {{ item.description }}</p>
+        {% else %}
+            <p>Description: No Description avaible</p>
+        {% endif %}
+        <h4>Winnng bid: ${{ item.bid }} By {{ item.winner }}</h4>
+
+        <a href="/item/{{ item.id }}">
+            <button class="btn btn-primary">Read More</button>
+        </a>        
+    </div>
+    <hr>
+    {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,75 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Categorys</h2>
+    <br>
+    Categorys:
+    {% for category in categorys %}
+        <a href="{{ category }}">{{ category }}</a>&emsp; 
+    {% endfor %}
+
+    <br><br>
+    {% if current_category %}
+        <h2>Category filter by: {{ current_category }}</h2>
+        <br>
+        <h3>Active Items</h3>
+        <br>
+        {% if active_items %}
+            {% for item in active_items %}
+                <div class="list_object">
+                    <h3>{{ item.title }}</h3>
+                    <p>Category: <strong>{{item.category}}</strong></p>
+                    {% if item.image %}
+                        <img id="object_img" src="{{ item.image }}">
+                    {% else %}
+                        <p>No image</p>
+                    {% endif %}        
+                    {% if item.description %}
+                        <p>Description: {{ item.description }}</p>
+                    {% else %}
+                        <p>Description: No Description avaible</p>
+                    {% endif %}
+                    <h4>Current bid: ${{ item.bid }}</h4>
+
+                    <a href="/item/{{ item.id }}">
+                        <button class="btn btn-primary">Read More</button>
+                    </a>            
+                </div>
+                <hr>
+            {% endfor %}
+        {% else %}
+            <p>Sorry, we did´t found any active Items</p>
+            <br><br>
+        {% endif%}
+
+        {% if inactive_items %}
+        <br>
+        <h3>Finnished Auctions</h3>
+        <br>        
+            {% for item in inactive_items %}
+                <div class="list_object">        
+                    <h3>{{ item.title }}</h3>
+                    <p>Category: <strong>{{item.category}}</strong></p>
+                    {% if item.image %}
+                        <img id="object_img" src="{{ item.image }}">
+                    {% else %}
+                        <p>No image</p>
+                    {% endif %}        
+                    {% if object.description %}
+                        <p>Description: {{ item.description }}</p>
+                    {% else %}
+                        <p>Description: No Description avaible</p>
+                    {% endif %}
+                    <h4>Winnng bid: ${{ item.bid }} By {{ item.winner }}</h4>
+
+                    <a href="/item/{{ item.id }}">
+                        <button class="btn btn-primary">Read More</button>
+                    </a>        
+                </div>
+                <hr>
+            {% endfor %}    
+        {% endif %}
+    {% endif %}
+ 
+
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <h2>Posting a comment on: {{ title }}</h2>
+    <br>
+    <p>Be kind!</p>
+    <br>
+    {% if not comment_posted %}    
+        <div class="form-floating">
+            <form id="comment_form" method="POST">
+            {% csrf_token %}
+            <textarea class="form-control" form="comment_form" placeholder="Leave a comment about - {{ title }}" name="get_comment" style="height: 200px; width: 500px "></textarea>
+            <input  class="btn btn-primary" type="submit" value="Submit">
+        </form>
+        </div>
+    {% else%}
+        <h3>{{ comment_posted}}</h3>
+    {% endif %}
+      
+
+
+
+{% endblock %}
